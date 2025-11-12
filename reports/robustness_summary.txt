@@ -1,0 +1,25 @@
+
+ROBUSTNESS TESTING SUMMARY
+==========================
+
+OVERLAP SENSITIVITY:
+  Tested overlaps: [30, 60, 90, 133]
+  Weekly MAE range: 0.91 - 0.91
+  Weekly MAE CV: 0.000 (0.0% variation)
+  Alpha CV range: 0.558 - 0.560
+  All converged: True
+
+WEIGHT SENSITIVITY:
+  Tested weekly weights: [0.3, 0.5, 0.7]
+  Weekly MAE range: 0.86 - 0.95
+  Weekly MAE CV: 0.048 (4.8% variation)
+  Alpha CV range: 0.559 - 0.561
+  All converged: True
+
+ROBUSTNESS ASSESSMENT:
+  Overlap robustness: PASS (< 10% variation ideal)
+  Weight robustness: PASS (< 10% variation ideal)
+  Convergence: PASS
+
+RECOMMENDATION:
+  The hierarchical method is robust to parameter variations and suitable for production use.

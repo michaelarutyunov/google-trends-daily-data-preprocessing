@@ -1,0 +1,2 @@
+method,search_term,date_range,weekly_mae,weekly_correlation,weekly_bias_pct,monthly_mae,monthly_correlation,alpha_cv,num_days,exported
+smooth_alpha,flu vaccine,2022-01-01 to 2024-12-31,0.8739122465997352,0.938121723833673,388.4001882301084,2.1741542277536614,0.9732296759340385,0.30960047936617197,1096,2025-11-12T17:23:40.040243

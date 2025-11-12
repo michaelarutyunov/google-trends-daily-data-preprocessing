@@ -1,0 +1,37 @@
+
+BASELINE STITCHING SUMMARY
+==========================
+
+Search Term: flu vaccine
+Date Range: 2022-01-01 to 2024-12-31
+Overlap: 60 days
+
+DATA:
+  Monthly observations: 263
+  Weekly observations: 158
+  Daily chunks: 6
+  Stitched daily points: 1096
+
+VALIDATION METRICS:
+
+  ⚠️  MONTHLY (CIRCULAR VALIDATION - NOT MEANINGFUL):
+      MAE: 3.02e-16
+      RMSE: 7.59e-16
+      Correlation: 1.000
+
+      WARNING: Monthly metrics use training data (α = truth/raw).
+               Use weekly metrics for independent validation.
+
+  ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
+      MAE: 1.37
+      RMSE: 1.87
+      Correlation: 0.962 (pattern similarity)
+      NMAE: 6.084 (scale-invariant)
+      Bias: 608.4% (systematic deviation)
+
+ALPHA STATISTICS:
+  Mean: 1.014
+  Std: 0.220
+  Min: 0.536
+  Max: 1.309
+  CV: 0.217
