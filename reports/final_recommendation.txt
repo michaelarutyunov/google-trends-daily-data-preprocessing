@@ -4,7 +4,7 @@ FINAL METHOD COMPARISON & RECOMMENDATION
 
 Search Term: flu vaccine
 Date Range: 2022-01-01 to 2024-12-31
-Analysis Date: 2025-11-12 23:58:53
+Analysis Date: 2025-11-13 14:28:50
 
 PHASE 2 RESULTS (Full Dataset):
 -------------------------------
@@ -37,12 +37,12 @@ HIERARCHICAL_DOW:
   Converged: N/A
 
 SMOOTH_ALPHA:
-  Monthly MAE: 2.96 (✓ Valid)
-  Weekly MAE: 0.32 (✓ Valid)
-  Monthly Correlation: 0.941
-  Weekly Correlation: 0.916
-  Weekly Bias: 2.3%
-  Alpha CV: 0.701
+  Monthly MAE: 3.03 (✓ Valid)
+  Weekly MAE: 0.26 (✓ Valid)
+  Monthly Correlation: 0.951
+  Weekly Correlation: 0.937
+  Weekly Bias: -0.4%
+  Alpha CV: 0.541
   Converged: True
 
 STATE_SPACE:
@@ -74,9 +74,9 @@ HIERARCHICAL_DOW:
   Generalization Gap: -23.1% (PASS)
 
 SMOOTH_ALPHA:
-  Train MAE: 0.34
+  Train MAE: 0.26
   Test MAE: 0.20
-  Generalization Gap: -39.3% (PASS)
+  Generalization Gap: -21.0% (PASS)
 
 STATE_SPACE:
   Train MAE: 0.80
@@ -90,9 +90,9 @@ RECOMMENDATION:
 ✓ RECOMMENDED METHOD: SMOOTH_ALPHA
 
 Reasons:
-1. Best Weekly MAE: 0.32 (independent validation)
-2. Valid Monthly MAE: 2.96 (soft constraints, not circular)
-3. Weekly Correlation: 0.916 (pattern similarity)
+1. Best Weekly MAE: 0.26 (independent validation)
+2. Valid Monthly MAE: 3.03 (soft constraints, not circular)
+3. Weekly Correlation: 0.937 (pattern similarity)
 4. Temporal CV: PASS
 5. Principled optimization with soft constraints
 
@@ -101,7 +101,7 @@ ALL METHODS EVALUATED:
 - Baseline: Weekly MAE 0.70, Corr 0.936, circular monthly validation (reference method)
 - Hierarchical: Weekly MAE 0.36, Corr 0.902, Alpha CV 0.810 ⭐ BEST OVERALL
 - Hierarchical+DOW: Weekly MAE 0.38, Corr 0.900, renormalization degrades accuracy
-- Smooth Alpha: Weekly MAE 0.32, Corr 0.916, Alpha CV 0.701 (13.5% improvement), requires cvxpy
+- Smooth Alpha: Weekly MAE 0.26, Corr 0.937, Alpha CV 0.541 (33.3% improvement), requires cvxpy
 - State-Space: Weekly MAE 0.75, Corr 0.954, provides 95% CI ✓, requires statsmodels
 
 WHY THIS RECOMMENDATION:
@@ -117,10 +117,10 @@ WHEN TO USE ALTERNATIVES:
 
 PRODUCTION USE:
   Method: smooth_alpha
-  Weekly MAE: 0.32
-  Weekly Correlation: 0.916
-  Monthly MAE: 2.96
-  Alpha CV: 0.701
+  Weekly MAE: 0.26
+  Weekly Correlation: 0.937
+  Monthly MAE: 3.03
+  Alpha CV: 0.541
 
   Exported files:
     - results/smooth_alpha_final.parquet

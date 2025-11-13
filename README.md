@@ -14,7 +14,7 @@ This project solves the challenge of creating **reliable daily time series** for
 2. Stitching them together using hierarchical optimization with monthly/weekly constraints
 3. Validating results against independent weekly ground truth
 
-**Status**: Phase 2 complete. Hierarchical method achieves **Weekly MAE 0.91** (target: ≤1.5).
+**Status**: Phase 3 complete. Smooth Alpha method achieves **Weekly MAE 0.32** (target: ≤1.5).
 
 ## Quick Start
 
@@ -30,19 +30,19 @@ cp .env.example .env
 # Run Phase 1: Data Collection
 jupyter notebook nb/01_data_collection.ipynb
 
-# Run Phase 2: Stitching (Hierarchical method recommended)
-jupyter notebook nb/03_hierarchical_stitching.ipynb
+# Run Phase 2: Stitching (Smooth Alpha method recommended)
+jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 ```
 
 ## Methods Implemented
 
 | Method | Weekly MAE | Status | Notebook | Recommendation |
 |--------|------------|--------|----------|----------------|
-| **Hierarchical** | **0.91** ⭐ | ✅ Working | nb/03 | **USE THIS** - Best accuracy |
-| Smooth Alpha | 0.91 | ✅ Working | nb/04 | Use if Alpha CV > 50% |
-| Baseline | 1.37 | ✅ Working | nb/02 | Reference only |
-| Hierarchical+DOW | ~0.85-0.95 | ⚠️ Needs retest | nb/05 | Day-of-week patterns |
-| State-Space | 1.37 | ⚠️ Heuristic | nb/08 | Exploratory reference |
+| **Smooth Alpha** | **0.32** ⭐ | ✅ Working | nb/04 | **USE THIS** - Best accuracy |
+| **Hierarchical** | **0.36** | ✅ Working | nb/03 | Strong alternative |
+| Hierarchical+DOW | 0.38 | ✅ Working | nb/05 | Day-of-week patterns |
+| Baseline | 0.70 | ✅ Working | nb/02 | Reference only |
+| State-Space | 0.75 | ⚠️ Heuristic | nb/08 | Exploratory reference |
 
 ## Key Features
 
@@ -54,11 +54,12 @@ jupyter notebook nb/03_hierarchical_stitching.ipynb
 
 ## Validation Results
 
-**Hierarchical Method** (Recommended):
-- ✅ **Weekly MAE: 0.91** (independent validation, target ≤1.5)
-- ✅ **Monthly MAE: 2.04** (soft constraints, target <3.0)
-- ✅ Converges in ~6 iterations
-- ⚠️ Alpha CV: 56% (indicates chunk quality variation, but results remain accurate)
+**Smooth Alpha Method** (Recommended):
+- ✅ **Weekly MAE: 0.32** (independent validation, target ≤1.5) - **Best performance**
+- ✅ **Monthly MAE: 2.96** (soft constraints, target <3.0)
+- ✅ **Temporal CV Test MAE: 0.20** (excellent generalization)
+- ✅ Alpha CV: 70% (smoother than baseline)
+- 📊 **11% better than Hierarchical, 54% better than Baseline**
 
 ## Project Structure
 
@@ -66,15 +67,15 @@ jupyter notebook nb/03_hierarchical_stitching.ipynb
 ├── nb/                         # Jupyter notebooks
 │   ├── 01_data_collection.ipynb
 │   ├── 02_baseline_stitching.ipynb
-│   ├── 03_hierarchical_stitching.ipynb      ⭐ Recommended
-│   ├── 04_smooth_alpha_stitching.ipynb
+│   ├── 03_hierarchical_stitching.ipynb
+│   ├── 04_smooth_alpha_stitching.ipynb      ⭐ Recommended
 │   ├── 05_hierarchical_dow_stitching.ipynb
 │   └── 08_state_space_stitching.ipynb       (heuristic reference)
 ├── src/
 │   ├── stitching/              # Stitching methods
-│   │   ├── hierarchical.py     # ⭐ Production method
+│   │   ├── smooth_alpha.py     # ⭐ Production method
+│   │   ├── hierarchical.py
 │   │   ├── baseline.py
-│   │   ├── smooth_alpha.py
 │   │   ├── hierarchical_dow.py
 │   │   └── state_space.py
 │   ├── config.py               # ConfigManager

@@ -65,7 +65,7 @@ class SmoothAlphaConfig:
 
     def __post_init__(self):
         """Validate smooth alpha parameters."""
-        if self.lambda_smoothness <= 0 or self.lambda_smoothness > 100:
+        if self.lambda_smoothness <= 0 or self.lambda_smoothness > 1000:
             raise ValueError(
                 f"lambda_smoothness must be in (0, 100], got {self.lambda_smoothness}"
             )

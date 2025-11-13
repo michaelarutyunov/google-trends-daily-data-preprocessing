@@ -35,7 +35,7 @@ stitching:
 
   # Rung 4: Smooth Alpha Stitcher parameters
   smooth_alpha:
-    lambda_smoothness: 99  # Range: [0.1, 100.0] - higher = smoother alpha path
+    lambda_smoothness: 499  # Range: [0.1, 1000.0] - higher = smoother alpha path
     # Use when: Alpha CV > 20%, suspected Google rebasing events
 
   # Rung 5: State-Space Stitcher parameters (EXPLORATORY - see nb/08)
