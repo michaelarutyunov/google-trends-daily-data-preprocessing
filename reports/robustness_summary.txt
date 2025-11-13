@@ -4,16 +4,16 @@ ROBUSTNESS TESTING SUMMARY
 
 OVERLAP SENSITIVITY:
   Tested overlaps: [30, 60, 90, 133]
-  Weekly MAE range: 0.91 - 0.91
-  Weekly MAE CV: 0.000 (0.0% variation)
-  Alpha CV range: 0.558 - 0.560
+  Weekly MAE range: 0.36 - 0.36
+  Weekly MAE CV: 0.004 (0.4% variation)
+  Alpha CV range: 0.802 - 0.813
   All converged: True
 
 WEIGHT SENSITIVITY:
   Tested weekly weights: [0.3, 0.5, 0.7]
-  Weekly MAE range: 0.86 - 0.95
-  Weekly MAE CV: 0.048 (4.8% variation)
-  Alpha CV range: 0.559 - 0.561
+  Weekly MAE range: 0.35 - 0.37
+  Weekly MAE CV: 0.023 (2.3% variation)
+  Alpha CV range: 0.794 - 0.823
   All converged: True
 
 ROBUSTNESS ASSESSMENT:

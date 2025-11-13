@@ -15,36 +15,36 @@ DATA:
 VALIDATION METRICS:
 
   ✅ MONTHLY (SOFT CONSTRAINTS - MEANINGFUL):
-      MAE: 2.17 (Target: < 3.0)
-      RMSE: 3.09
-      Correlation: 0.973
-      NMAE: 0.312
-      Bias: -31.1%
+      MAE: 2.96 (Target: < 3.0)
+      RMSE: 3.57
+      Correlation: 0.941
+      NMAE: 0.425
+      Bias: -41.4%
 
       These metrics are meaningful because smooth alpha uses soft
       constraints (weighted, not forced) with smoothness penalty.
 
   ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
-      MAE: 0.87 ⭐ (Target: < 1.5)
-      RMSE: 1.21
-      Correlation: 0.938 (pattern similarity)
-      NMAE: 3.885 (scale-invariant)
-      Bias: 388.4% (systematic deviation)
+      MAE: 0.32 ⭐ (Target: < 1.5)
+      RMSE: 0.56
+      Correlation: 0.916 (pattern similarity)
+      NMAE: 0.348 (scale-invariant)
+      Bias: 2.3% (systematic deviation)
 
 ALPHA STATISTICS (Chunk-level):
-  Mean: 0.645
-  Std: 0.200
-  Min: 0.314
-  Max: 0.970
-  CV: 0.310 (Target: < 0.20)
+  Mean: 0.168
+  Std: 0.118
+  Min: 0.025
+  Max: 0.375
+  CV: 0.701 (Target: < 0.20)
 
 ALPHA SMOOTHNESS:
-  Mean |diff|: 0.2726
-  Max |diff|: 0.4454
-  Std diff: 0.3169
+  Mean |diff|: 0.1909
+  Max |diff|: 0.3221
+  Std diff: 0.2138
 
 OPTIMIZATION (CVXPY):
   Status: optimal
   Converged: True
-  Objective value: 307.93900493513974
+  Objective value: 290.9730376103169
   Lambda smoothness: 99

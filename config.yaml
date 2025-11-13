@@ -3,6 +3,7 @@
 
 # Search parameters
 search_term: "flu vaccine"
+geo: "GB"  # Geographic location code (US, GB, DE, FR, etc.)
 
 # Date range for analysis
 date_range:

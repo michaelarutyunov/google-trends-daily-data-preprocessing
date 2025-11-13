@@ -21,25 +21,25 @@ DATA:
 VALIDATION METRICS:
 
   MONTHLY:
-      MAE: 0.50 (Target: < 3.0)
-      RMSE: 0.81
-      Correlation: 0.992
-      NMAE: 0.072
-      Bias: 0.5%
+      MAE: 2.16 (Target: < 3.0)
+      RMSE: 2.93
+      Correlation: 0.974
+      NMAE: 0.309
+      Bias: 2.4%
 
   ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
-      MAE: 1.37 ⭐ (Target: < 1.5)
-      RMSE: 1.84
-      Correlation: 0.955 (pattern similarity)
-      NMAE: 6.111 (scale-invariant)
-      Bias: 611.1% (systematic deviation)
+      MAE: 0.75 ⭐ (Target: < 1.5)
+      RMSE: 1.25
+      Correlation: 0.954 (pattern similarity)
+      NMAE: 0.816 (scale-invariant)
+      Bias: 78.6% (systematic deviation)
 
 ALPHA STATISTICS (Chunk-level):
-  Mean: 1.046
-  Std: 0.177
-  Min: 0.730
-  Max: 1.243
-  CV: 0.169
+  Mean: 0.340
+  Std: 0.082
+  Min: 0.223
+  Max: 0.470
+  CV: 0.240
 
 UNCERTAINTY QUANTIFICATION:
   Mean confidence width: 0.06
@@ -51,7 +51,7 @@ STATE-SPACE ESTIMATION:
   Method: exponential_smoothing_with_kalman_gain
 
 COMPARISON WITH HIERARCHICAL:
-  Hierarchical Weekly MAE: 0.91
-  State-Space Weekly MAE: 1.37
-  Difference: +0.46 (state-space worse)
+  Hierarchical Weekly MAE: 0.36
+  State-Space Weekly MAE: 0.75
+  Difference: +0.39 (state-space worse)
   Key advantage: State-Space adds uncertainty quantification

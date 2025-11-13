@@ -15,23 +15,23 @@ DATA:
 VALIDATION METRICS:
 
   ⚠️  MONTHLY (CIRCULAR VALIDATION - NOT MEANINGFUL):
-      MAE: 3.02e-16
-      RMSE: 7.59e-16
+      MAE: 4.44e-16
+      RMSE: 1.01e-15
       Correlation: 1.000
 
       WARNING: Monthly metrics use training data (α = truth/raw).
                Use weekly metrics for independent validation.
 
   ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
-      MAE: 1.37
-      RMSE: 1.87
-      Correlation: 0.962 (pattern similarity)
-      NMAE: 6.084 (scale-invariant)
-      Bias: 608.4% (systematic deviation)
+      MAE: 0.70
+      RMSE: 0.90
+      Correlation: 0.936 (pattern similarity)
+      NMAE: 0.765 (scale-invariant)
+      Bias: 74.4% (systematic deviation)
 
 ALPHA STATISTICS:
-  Mean: 1.014
-  Std: 0.220
-  Min: 0.536
-  Max: 1.309
-  CV: 0.217
+  Mean: 0.664
+  Std: 0.479
+  Min: 0.161
+  Max: 1.912
+  CV: 0.721

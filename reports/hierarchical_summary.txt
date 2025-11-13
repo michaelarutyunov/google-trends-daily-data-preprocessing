@@ -15,28 +15,28 @@ DATA:
 VALIDATION METRICS:
 
   ✅ MONTHLY (SOFT CONSTRAINTS - MEANINGFUL):
-      MAE: 2.04 (Target: < 3.0)
-      RMSE: 3.03
-      Correlation: 0.942
-      NMAE: 0.292
-      Bias: -28.9%
+      MAE: 2.92 (Target: < 3.0)
+      RMSE: 3.58
+      Correlation: 0.935
+      NMAE: 0.419
+      Bias: -40.7%
 
       These metrics are meaningful because hierarchical uses soft
       constraints (weighted, not forced).
 
   ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
-      MAE: 0.91 ⭐ (Target: < 1.5)
-      RMSE: 1.34
-      Correlation: 0.903 (pattern similarity)
-      NMAE: 4.056 (scale-invariant)
-      Bias: 404.9% (systematic deviation)
+      MAE: 0.36 ⭐ (Target: < 1.5)
+      RMSE: 0.62
+      Correlation: 0.902 (pattern similarity)
+      NMAE: 0.391 (scale-invariant)
+      Bias: 3.6% (systematic deviation)
 
 ALPHA STATISTICS (Chunk-level):
-  Mean: 0.621
-  Std: 0.348
-  Min: 0.087
-  Max: 1.103
-  CV: 0.560
+  Mean: 0.167
+  Std: 0.136
+  Min: 0.009
+  Max: 0.387
+  CV: 0.810
 
 OPTIMIZATION:
   Converged: True

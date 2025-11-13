@@ -13,43 +13,43 @@ DATA:
   Stitched daily points: 1096
 
 DAY-OF-WEEK PATTERN:
-  Monday: 1.047 (+4.7%)
-  Tuesday: 1.159 (+15.9%)
-  Wednesday: 1.163 (+16.3%)
-  Thursday: 1.132 (+13.2%)
-  Friday: 1.043 (+4.3%)
-  Saturday: 0.785 (-21.5%)
-  Sunday: 0.670 (-33.0%)
+  Monday: 1.163 (+16.3%)
+  Tuesday: 1.194 (+19.4%)
+  Wednesday: 1.286 (+28.6%)
+  Thursday: 1.197 (+19.7%)
+  Friday: 1.031 (+3.1%)
+  Saturday: 0.672 (-32.8%)
+  Sunday: 0.457 (-54.3%)
 
   Mean: 1.000
-  Std: 0.181
-  Range: 0.493
+  Std: 0.290
+  Range: 0.829
 
 VALIDATION METRICS:
 
   ✅ MONTHLY (DOW-CORRECTED, SOFT CONSTRAINTS - MEANINGFUL):
-      MAE: 1.92 (Target: < 3.0)
-      RMSE: 2.90
-      Correlation: 0.942
-      NMAE: 0.275
-      Bias: -26.9%
+      MAE: 2.75 (Target: < 3.0)
+      RMSE: 3.39
+      Correlation: 0.937
+      NMAE: 0.395
+      Bias: -37.4%
 
       These metrics are meaningful because the method uses DOW correction
       with soft constraints (not forced renormalization).
 
-  Base Monthly MAE (before DOW): 2.04
-  Improvement: 6.1%
+  Base Monthly MAE (before DOW): 2.92
+  Improvement: 5.8%
 
   ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
-      MAE: 0.95 ⭐ (Target: < 1.5)
-      RMSE: 1.39
-      Correlation: 0.901 (pattern similarity)
-      NMAE: 4.208 (scale-invariant)
-      Bias: 419.6% (systematic deviation)
+      MAE: 0.38 ⭐ (Target: < 1.5)
+      RMSE: 0.67
+      Correlation: 0.900 (pattern similarity)
+      NMAE: 0.412 (scale-invariant)
+      Bias: 9.2% (systematic deviation)
 
 ALPHA STATISTICS (Chunk-level):
-  Mean: 0.621
-  Std: 0.348
-  Min: 0.087
-  Max: 1.103
-  CV: 0.560
+  Mean: 0.167
+  Std: 0.136
+  Min: 0.009
+  Max: 0.387
+  CV: 0.810

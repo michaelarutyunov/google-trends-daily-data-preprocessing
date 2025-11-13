@@ -4,6 +4,7 @@ Google Trends Data Collection - Stage 0 Audit Report
 Configuration Summary
 =====================
 Search Term: flu vaccine
+Geographic Location: GB
 Date Range: 2022-01-01 to 2024-12-31 (1096 days)
 Overlap: 60 days
 Random Seed: 42
@@ -23,8 +24,8 @@ Optimization:
 
 SerpAPI:
   Timeout: 90s
-  Max Retries: 5
-  Retry Delay: 2s
+  Max Retries: 3
+  Retry Delay: 10s
 
 Data Collection Summary:
   Historical Monthly: 263 points (2004-present)
@@ -48,9 +49,9 @@ STATISTICS:
   chunk_3_4_overlap_days: 60
   chunk_4_5_overlap_days: 60
   monthly_count: 158
-  monthly_mean: 28.37
-  monthly_std: 25.04
-  monthly_min: 6
+  monthly_mean: 19.65
+  monthly_std: 25.36
+  monthly_min: 2
   monthly_max: 100
   num_daily_chunks: 6
   total_daily_points: 1396

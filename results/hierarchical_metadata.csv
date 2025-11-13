@@ -1,2 +1,0 @@
-method,search_term,date_range,weekly_mae,monthly_mae,alpha_cv,num_days,exported
-hierarchical,flu vaccine,2022-01-01 to 2024-12-31,0.912359833237079,2.0386951189296525,0.5599037062328558,1096,2025-11-12T10:03:21.381288

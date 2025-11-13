@@ -241,6 +241,8 @@ class ConfigManager:
         if not self.search_term:
             raise ValueError("search_term is required in config.yaml")
 
+        self.geo: str = self.raw_config.get("geo", "US")
+
         self.random_seed: int = self.raw_config.get("random_seed", 42)
 
         # Date range
@@ -364,6 +366,7 @@ class ConfigManager:
 Configuration Summary
 =====================
 Search Term: {self.search_term}
+Geographic Location: {self.geo}
 Date Range: {self.date_range.start} to {self.date_range.end} ({self.date_range.total_days} days)
 Overlap: {self.daily.overlap_days} days
 Random Seed: {self.random_seed}

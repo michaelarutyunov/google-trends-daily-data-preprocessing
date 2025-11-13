@@ -281,7 +281,7 @@ class TrendsAPI:
         return df
 
     def fetch_historical_monthly(
-        self, search_term: str, start_year: int = 2004, end_year: Optional[int] = None
+        self, search_term: str, start_year: int = 2004, end_year: Optional[int] = None, geo: Optional[str] = None
     ) -> pd.DataFrame:
         """
         Fetch historical data (returns monthly frequency).
@@ -292,6 +292,7 @@ class TrendsAPI:
             search_term: Search query
             start_year: Start year (default: 2004, when Google Trends started)
             end_year: End year (default: current year)
+            geo: Geographic location code (default: US)
 
         Returns:
             DataFrame with monthly frequency data
@@ -302,9 +303,9 @@ class TrendsAPI:
         start_date = f"{start_year}-01-01"
         end_date = f"{end_year}-12-31"
 
-        return self.fetch(search_term, start_date, end_date)
+        return self.fetch(search_term, start_date, end_date, geo=geo or "US")
 
-    def fetch_weekly(self, search_term: str, start_date: str, end_date: str) -> pd.DataFrame:
+    def fetch_weekly(self, search_term: str, start_date: str, end_date: str, geo: Optional[str] = None) -> pd.DataFrame:
         """
         Fetch data for medium date range (returns weekly frequency).
 
@@ -314,13 +315,14 @@ class TrendsAPI:
             search_term: Search query
             start_date: Start date in YYYY-MM-DD format
             end_date: End date in YYYY-MM-DD format
+            geo: Geographic location code (default: US)
 
         Returns:
             DataFrame with weekly frequency data
         """
-        return self.fetch(search_term, start_date, end_date)
+        return self.fetch(search_term, start_date, end_date, geo=geo or "US")
 
-    def fetch_daily(self, search_term: str, start_date: str, end_date: str) -> pd.DataFrame:
+    def fetch_daily(self, search_term: str, start_date: str, end_date: str, geo: Optional[str] = None) -> pd.DataFrame:
         """
         Fetch data for short date range (returns daily frequency).
 
@@ -330,6 +332,7 @@ class TrendsAPI:
             search_term: Search query
             start_date: Start date in YYYY-MM-DD format
             end_date: End date in YYYY-MM-DD format
+            geo: Geographic location code (default: US)
 
         Returns:
             DataFrame with daily frequency data
@@ -337,7 +340,7 @@ class TrendsAPI:
         Note:
             For longer periods, use fetch_daily_chunks() to split into multiple requests.
         """
-        return self.fetch(search_term, start_date, end_date)
+        return self.fetch(search_term, start_date, end_date, geo=geo or "US")
 
     def fetch_daily_chunks(
         self,
@@ -346,6 +349,7 @@ class TrendsAPI:
         end_date: str,
         max_chunk_days: int = 266,
         overlap_days: int = 60,
+        geo: Optional[str] = None,
     ) -> List[pd.DataFrame]:
         """
         Fetch daily data in overlapping chunks.
@@ -356,6 +360,7 @@ class TrendsAPI:
             end_date: End date in YYYY-MM-DD format
             max_chunk_days: Maximum days per chunk (Google Trends limit ~270)
             overlap_days: Overlap between consecutive chunks
+            geo: Geographic location code (default: US)
 
         Returns:
             List of DataFrames, one per chunk
@@ -383,7 +388,7 @@ class TrendsAPI:
 
             logger.info(f"Fetching chunk {i}/{num_chunks}: {chunk_start_str} to {chunk_end_str}")
 
-            chunk_df = self.fetch_daily(search_term, chunk_start_str, chunk_end_str)
+            chunk_df = self.fetch_daily(search_term, chunk_start_str, chunk_end_str, geo=geo)
             chunks.append(chunk_df)
 
             # Move to next chunk (with overlap)
