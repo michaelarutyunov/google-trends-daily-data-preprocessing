@@ -36,12 +36,12 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 
 ## Methods Implemented
 
-| Method | Weekly MAE | Status | Notebook | Recommendation |
-|--------|------------|--------|----------|----------------|
-| **Smooth Alpha** | **0.32** ⭐ | ✅ Working | nb/04 | Leading |
-| **Hierarchical** | **0.36** | ✅ Working | nb/03 | Leading |
-| Hierarchical+DOW | 0.38 | ✅ Working | nb/05 | Day-of-week patterns |
-| Baseline | 0.70 | ✅ Working | nb/02 | Reference only |
+| Method | Status | Notebook | Recommendation |
+|--------|--------|----------|----------------|
+| **Smooth Alpha** | ✅ Working | nb/04 | Leading |
+| **Hierarchical** | ✅ Working | nb/03 | Leading |
+| Hierarchical+DOW | ✅ Working | nb/05 | Day-of-week patterns |
+| Baseline | ✅ Working | nb/02 | Reference only |
 
 ## Key Features
 
@@ -59,11 +59,11 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 │   ├── 01_data_collection.ipynb
 │   ├── 02_baseline_stitching.ipynb
 │   ├── 03_hierarchical_stitching.ipynb
-│   ├── 04_smooth_alpha_stitching.ipynb      ⭐ Recommended
+│   ├── 04_smooth_alpha_stitching.ipynb      
 │   └── 05_hierarchical_dow_stitching.ipynb
 ├── src/
 │   ├── stitching/              # Stitching methods
-│   │   ├── smooth_alpha.py     # ⭐ Production method
+│   │   ├── smooth_alpha.py     
 │   │   ├── hierarchical.py
 │   │   ├── baseline.py
 │   │   └── hierarchical_dow.py
@@ -80,10 +80,8 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 
 ## Documentation
 
-- **[CLAUDE.md](CLAUDE.md)** - Complete implementation guide for Claude Code
 - **[google_trends_design_summary.md](google_trends_design_summary.md)** - System design
 - **[google_trends_stitching_analytical_plan.md](google_trends_stitching_analytical_plan.md)** - Methods and validation strategy
-- **[reports/validation_comparison.md](reports/validation_comparison.md)** - Method performance comparison
 
 ## Requirements
 
@@ -97,5 +95,5 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 
 ## Citation
 
-
 [Add citation info if publishing results]
+
