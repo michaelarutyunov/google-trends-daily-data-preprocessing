@@ -38,8 +38,8 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 
 | Method | Weekly MAE | Status | Notebook | Recommendation |
 |--------|------------|--------|----------|----------------|
-| **Smooth Alpha** | **0.32** ⭐ | ✅ Working | nb/04 | **USE THIS** - Best accuracy |
-| **Hierarchical** | **0.36** | ✅ Working | nb/03 | Strong alternative |
+| **Smooth Alpha** | **0.32** ⭐ | ✅ Working | nb/04 | Leading |
+| **Hierarchical** | **0.36** | ✅ Working | nb/03 | Leading |
 | Hierarchical+DOW | 0.38 | ✅ Working | nb/05 | Day-of-week patterns |
 | Baseline | 0.70 | ✅ Working | nb/02 | Reference only |
 
@@ -51,14 +51,6 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 - **Reproducible Pipeline**: Config-driven workflow with automated logging and validation reports
 - **Production-Ready**: Parquet storage, comprehensive error handling, detailed diagnostics
 
-## Validation Results
-
-**Smooth Alpha Method** (Recommended):
-- ✅ **Weekly MAE: 0.32** (independent validation, target ≤1.5) - **Best performance**
-- ✅ **Monthly MAE: 2.96** (soft constraints, target <3.0)
-- ✅ **Temporal CV Test MAE: 0.20** (excellent generalization)
-- ✅ Alpha CV: 70% (smoother than baseline)
-- 📊 **11% better than Hierarchical, 54% better than Baseline**
 
 ## Project Structure
 
@@ -104,5 +96,6 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 [Add your license here]
 
 ## Citation
+
 
 [Add citation info if publishing results]
