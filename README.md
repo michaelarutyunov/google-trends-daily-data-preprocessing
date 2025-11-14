@@ -14,7 +14,6 @@ This project solves the challenge of creating **reliable daily time series** for
 2. Stitching them together using hierarchical optimization with monthly/weekly constraints
 3. Validating results against independent weekly ground truth
 
-**Status**: Phase 3 complete. Smooth Alpha method achieves **Weekly MAE 0.32** (target: ≤1.5).
 
 ## Quick Start
 
@@ -96,4 +95,5 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 ## Citation
 
 [Add citation info if publishing results]
+
 
