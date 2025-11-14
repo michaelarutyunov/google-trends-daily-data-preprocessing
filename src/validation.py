@@ -328,36 +328,64 @@ class Validator:
         stitched: pd.DataFrame,
         ground_truth: pd.DataFrame,
         resolution: str = "monthly",
+        return_nmae: bool = False,
     ) -> float:
         """
-        Calculate Mean Absolute Error.
+        Calculate Mean Absolute Error (and optionally NMAE).
+
+        .. deprecated:: This function is orphaned and not used by stitching methods.
+            All metrics are calculated by StitchingEngine._calculate_comparison_metrics()
+            in base.py. This function is retained for standalone validation only.
 
         Args:
             stitched: Stitched daily series
             ground_truth: Ground truth (monthly or weekly)
             resolution: Aggregation resolution ('monthly' or 'weekly')
+            return_nmae: If True, return (MAE, NMAE) tuple instead of MAE scalar
 
         Returns:
-            MAE value
+            MAE value, or (MAE, NMAE) tuple if return_nmae=True
         """
+        warnings.warn(
+            "Validator.calculate_mae() is orphaned. "
+            "Use StitchingEngine._calculate_comparison_metrics() instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+
         # Aggregate stitched to resolution
         stitched_copy = stitched.copy()
         stitched_copy["date"] = pd.to_datetime(stitched_copy["date"])
 
         if resolution == "monthly":
             stitched_copy["period"] = stitched_copy["date"].dt.to_period("M")
+            stitched_agg = stitched_copy.groupby("period")["value"].sum().reset_index()
+            stitched_agg["date"] = stitched_agg["period"].dt.to_timestamp()
         elif resolution == "weekly":
-            # CRITICAL: Use Sunday-ending weeks to match Google Trends format
-            stitched_copy["period"] = stitched_copy["date"].dt.to_period("W-SUN")
+            # FIXED: Use resample('W-SUN') to produce Sunday dates (not Monday)
+            # Previous to_period('W-SUN').to_timestamp() produced Mondays and failed to merge
+            stitched_copy = stitched_copy.set_index("date")
+            stitched_agg = stitched_copy.resample("W-SUN")["value"].sum().reset_index()
+
+            # Verify Sunday alignment
+            if not stitched_agg.empty:
+                assert (stitched_agg["date"].dt.dayofweek == 6).all(), \
+                    f"Weekly aggregation produced non-Sunday dates: {stitched_agg['date'].dt.day_name().unique()}"
         else:
             raise ValueError(f"Invalid resolution: {resolution}")
-
-        stitched_agg = stitched_copy.groupby("period")["value"].sum().reset_index()
-        stitched_agg["date"] = stitched_agg["period"].dt.to_timestamp()
 
         # Merge with ground truth
         gt_copy = ground_truth.copy()
         gt_copy["date"] = pd.to_datetime(gt_copy["date"])
+
+        # Verify ground truth frequency for weekly data
+        if resolution == "weekly" and len(gt_copy) > 1:
+            freq_mode = gt_copy["date"].diff().dropna().mode()
+            if len(freq_mode) > 0 and freq_mode[0] != pd.Timedelta(7, 'D'):
+                logger.warning(
+                    f"Ground truth may not be weekly: mode frequency = {freq_mode[0]} "
+                    f"(expected 7 days)"
+                )
 
         merged = pd.merge(
             stitched_agg[["date", "value"]],
@@ -367,10 +395,22 @@ class Validator:
         )
 
         if merged.empty:
-            logger.warning(f"No overlapping {resolution} periods for MAE calculation")
-            return float("inf")
+            logger.warning(
+                f"No overlapping {resolution} periods for MAE calculation. "
+                f"Stitched has {len(stitched_agg)} periods, GT has {len(gt_copy)} periods. "
+                f"This usually indicates date misalignment."
+            )
+            return (float("inf"), float("inf")) if return_nmae else float("inf")
 
+        # Calculate MAE
         mae = np.abs(merged["value_stitched"] - merged["value_gt"]).mean()
+
+        # Calculate NMAE if requested
+        if return_nmae:
+            mean_gt = merged["value_gt"].mean()
+            nmae = mae / mean_gt if mean_gt > 1e-6 else float("inf")
+            return (mae, nmae)
+
         return mae
 
     @staticmethod
@@ -385,9 +425,8 @@ class Validator:
 
         .. deprecated::
             MAPE is deprecated for this use case as it is undefined for zero values
-            and not meaningful for normalized index data. Use R² (coefficient of
-            determination) instead for model fit assessment, or MAE/RMSE for
-            interpretable error metrics.
+            and not meaningful for normalized index data. Use NMAE (Normalized MAE)
+            or Correlation instead for validation metrics.
 
         Args:
             stitched: Stitched daily series
@@ -400,8 +439,8 @@ class Validator:
         """
         warnings.warn(
             "calculate_mape() is deprecated. MAPE is not appropriate for normalized "
-            "index data and is undefined for zero values. Use R² (coefficient of "
-            "determination) for model fit, or MAE/RMSE for interpretable error metrics.",
+            "index data and is undefined for zero values. Use NMAE (Normalized MAE) "
+            "or Correlation for validation metrics.",
             DeprecationWarning,
             stacklevel=2
         )
@@ -412,14 +451,19 @@ class Validator:
 
         if resolution == "monthly":
             stitched_copy["period"] = stitched_copy["date"].dt.to_period("M")
+            stitched_agg = stitched_copy.groupby("period")["value"].sum().reset_index()
+            stitched_agg["date"] = stitched_agg["period"].dt.to_timestamp()
         elif resolution == "weekly":
-            # CRITICAL: Use Sunday-ending weeks to match Google Trends format
-            stitched_copy["period"] = stitched_copy["date"].dt.to_period("W-SUN")
+            # FIXED: Use resample('W-SUN') to produce Sunday dates (not Monday)
+            stitched_copy = stitched_copy.set_index("date")
+            stitched_agg = stitched_copy.resample("W-SUN")["value"].sum().reset_index()
+
+            # Verify Sunday alignment
+            if not stitched_agg.empty:
+                assert (stitched_agg["date"].dt.dayofweek == 6).all(), \
+                    f"Weekly aggregation produced non-Sunday dates: {stitched_agg['date'].dt.day_name().unique()}"
         else:
             raise ValueError(f"Invalid resolution: {resolution}")
-
-        stitched_agg = stitched_copy.groupby("period")["value"].sum().reset_index()
-        stitched_agg["date"] = stitched_agg["period"].dt.to_timestamp()
 
         # Merge with ground truth
         gt_copy = ground_truth.copy()
@@ -433,7 +477,10 @@ class Validator:
         )
 
         if merged.empty:
-            logger.warning(f"No overlapping {resolution} periods for MAPE calculation")
+            logger.warning(
+                f"No overlapping {resolution} periods for MAPE calculation. "
+                f"This usually indicates date misalignment."
+            )
             return float("inf")
 
         mape = 100 * np.mean(
@@ -480,17 +527,21 @@ class CVTester:
         Returns:
             Dictionary with train/test splits and metadata
         """
-        # Get date range
-        all_dates = []
+        # Get date range (optimized to avoid materializing all dates)
+        min_date = None
+        max_date = None
+
         for chunk in daily_chunks:
             if not chunk.empty:
-                all_dates.extend(pd.to_datetime(chunk["date"]))
+                chunk_dates = pd.to_datetime(chunk["date"])
+                chunk_min = chunk_dates.min()
+                chunk_max = chunk_dates.max()
 
-        if not all_dates:
+                min_date = chunk_min if min_date is None else min(min_date, chunk_min)
+                max_date = chunk_max if max_date is None else max(max_date, chunk_max)
+
+        if min_date is None or max_date is None:
             raise ValueError("No dates found in daily chunks")
-
-        min_date = min(all_dates)
-        max_date = max(all_dates)
 
         logger.info(f"Data range: {min_date.date()} to {max_date.date()}")
 
@@ -561,6 +612,19 @@ class CVTester:
             f"Train monthly={len(train_monthly)}, Test monthly={len(test_monthly)}"
         )
 
+        # Validate no train/test leakage
+        if train_chunks and test_chunks:
+            train_dates = set(pd.concat(train_chunks)["date"])
+            test_dates = set(pd.concat(test_chunks)["date"])
+            overlap = train_dates & test_dates
+
+            if overlap:
+                logger.error(
+                    f"Train/test leakage detected: {len(overlap)} overlapping dates found. "
+                    f"This should not happen with gap_months={self.gap_months}."
+                )
+                raise ValueError(f"Train/test split has {len(overlap)} overlapping dates")
+
         return {
             "train_chunks": train_chunks,
             "test_chunks": test_chunks,
@@ -602,6 +666,29 @@ class CVTester:
         # Split data
         splits = self.split_temporal(daily_chunks, monthly_data, weekly_data)
 
+        # Validate splits have sufficient data
+        if not splits["train_chunks"] or not splits["test_chunks"]:
+            logger.error(
+                f"Insufficient data for temporal CV: "
+                f"train_chunks={len(splits['train_chunks'])}, "
+                f"test_chunks={len(splits['test_chunks'])}"
+            )
+            return {
+                "method": stitcher.name(),
+                "error": "Insufficient data for temporal CV",
+                "train_metrics": {},
+                "test_metrics": {},
+                "generalization_gap_nmae": float('nan'),
+                "generalization_gap_mae": float('nan'),
+                "split_info": {
+                    "train_months": self.train_months,
+                    "test_months": self.test_months,
+                    "gap_months": self.gap_months,
+                    "train_chunks": len(splits["train_chunks"]),
+                    "test_chunks": len(splits["test_chunks"]),
+                },
+            }
+
         # Train on train period
         logger.info("Training on train period...")
         train_result = stitcher.stitch(
@@ -625,12 +712,16 @@ class CVTester:
             "method": stitcher.name(),
             "train_metrics": {
                 "monthly_mae": train_result.diagnostics.get("monthly_mae"),
+                "monthly_nmae": train_result.diagnostics.get("monthly_nmae"),
                 "weekly_mae": train_result.diagnostics.get("weekly_mae"),
+                "weekly_nmae": train_result.diagnostics.get("weekly_nmae"),
                 "alpha_cv": train_result.diagnostics.get("alpha_cv"),
             },
             "test_metrics": {
                 "monthly_mae": test_result.diagnostics.get("monthly_mae"),
+                "monthly_nmae": test_result.diagnostics.get("monthly_nmae"),
                 "weekly_mae": test_result.diagnostics.get("weekly_mae"),
+                "weekly_nmae": test_result.diagnostics.get("weekly_nmae"),
                 "alpha_cv": test_result.diagnostics.get("alpha_cv"),
             },
             "split_info": {
@@ -642,30 +733,60 @@ class CVTester:
             },
         }
 
-        # Calculate generalization metrics
+        # Calculate generalization metrics (MAE)
         train_mae = cv_metrics["train_metrics"].get("weekly_mae") or cv_metrics["train_metrics"].get("monthly_mae")
         test_mae = cv_metrics["test_metrics"].get("weekly_mae") or cv_metrics["test_metrics"].get("monthly_mae")
 
         if train_mae and test_mae:
-            cv_metrics["generalization_gap"] = test_mae - train_mae
-            # Avoid division by very small values (unreliable percentage if train_mae < 0.01)
-            if train_mae >= 0.01:
-                cv_metrics["generalization_gap_pct"] = 100 * (test_mae - train_mae) / train_mae
+            cv_metrics["generalization_gap_mae"] = test_mae - train_mae
+            # Avoid division by very small values (guard against near-zero denominators)
+            if abs(train_mae) < 1e-6:
+                cv_metrics["generalization_gap_mae_pct"] = 0.0 if abs(test_mae) < 1e-6 else float('inf')
             else:
-                cv_metrics["generalization_gap_pct"] = float('inf') if test_mae > train_mae else 0.0
+                cv_metrics["generalization_gap_mae_pct"] = 100 * (test_mae - train_mae) / train_mae
 
-            # Check if performance degrades significantly
-            if cv_metrics["generalization_gap"] > train_mae * 0.02:  # More than 2% relative degradation
+        # Calculate generalization metrics (NMAE - scale-invariant)
+        train_nmae = cv_metrics["train_metrics"].get("weekly_nmae") or cv_metrics["train_metrics"].get("monthly_nmae")
+        test_nmae = cv_metrics["test_metrics"].get("weekly_nmae") or cv_metrics["test_metrics"].get("monthly_nmae")
+
+        if train_nmae and test_nmae:
+            cv_metrics["generalization_gap_nmae"] = test_nmae - train_nmae
+            # NMAE is already normalized, so percentage change is more stable
+            if abs(train_nmae) < 1e-6:
+                cv_metrics["generalization_gap_nmae_pct"] = 0.0 if abs(test_nmae) < 1e-6 else float('inf')
+            else:
+                cv_metrics["generalization_gap_nmae_pct"] = 100 * (test_nmae - train_nmae) / train_nmae
+
+            # Check if performance degrades significantly (using NMAE as primary)
+            if cv_metrics["generalization_gap_nmae"] > 0.10:  # More than 10% of mean degradation
+                logger.warning(
+                    f"Significant generalization gap detected: "
+                    f"Train NMAE={train_nmae:.3f}, Test NMAE={test_nmae:.3f}, "
+                    f"Gap={cv_metrics['generalization_gap_nmae']:.3f} ({cv_metrics['generalization_gap_nmae_pct']:.1f}%)"
+                )
+                if train_mae and test_mae:
+                    logger.info(f"  [MAE context: Train={train_mae:.2f}, Test={test_mae:.2f}]")
+            else:
+                logger.success(
+                    f"Good generalization: "
+                    f"Train NMAE={train_nmae:.3f}, Test NMAE={test_nmae:.3f}, "
+                    f"Gap={cv_metrics['generalization_gap_nmae']:.3f} ({cv_metrics['generalization_gap_nmae_pct']:.1f}%)"
+                )
+                if train_mae and test_mae:
+                    logger.info(f"  [MAE context: Train={train_mae:.2f}, Test={test_mae:.2f}]")
+        elif train_mae and test_mae:
+            # Fallback to MAE if NMAE not available
+            if cv_metrics["generalization_gap_mae"] > train_mae * 0.02:  # More than 2% relative degradation
                 logger.warning(
                     f"Significant generalization gap detected: "
                     f"Train MAE={train_mae:.2f}, Test MAE={test_mae:.2f}, "
-                    f"Gap={cv_metrics['generalization_gap']:.2f} ({cv_metrics['generalization_gap_pct']:.1f}%)"
+                    f"Gap={cv_metrics['generalization_gap_mae']:.2f} ({cv_metrics['generalization_gap_mae_pct']:.1f}%)"
                 )
             else:
                 logger.success(
                     f"Good generalization: "
                     f"Train MAE={train_mae:.2f}, Test MAE={test_mae:.2f}, "
-                    f"Gap={cv_metrics['generalization_gap']:.2f} ({cv_metrics['generalization_gap_pct']:.1f}%)"
+                    f"Gap={cv_metrics['generalization_gap_mae']:.2f} ({cv_metrics['generalization_gap_mae_pct']:.1f}%)"
                 )
 
         logger.info(f"Temporal CV complete for {stitcher.name()}")

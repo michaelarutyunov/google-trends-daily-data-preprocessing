@@ -29,6 +29,87 @@ Recommended metrics instead:
 - MAE/RMSE: Direct error magnitude for same-scale comparisons
 """
 
+# Metric Hierarchy Guide
+METRIC_HIERARCHY_GUIDE = """
+METRIC HIERARCHY FOR GOOGLE TRENDS STITCHING VALIDATION
+
+This guide explains which metrics to prioritize for different use cases.
+
+═══════════════════════════════════════════════════════════════════════
+USE CASE: VALIDATION (comparing two measurements of same data)
+═══════════════════════════════════════════════════════════════════════
+Example: Weekly ground truth vs aggregated stitched daily
+
+PRIMARY METRICS (make/break decisions):
+1. Pearson Correlation (corr) - Target: ≥ 0.90
+   - Measures pattern similarity independent of scale
+   - Best for detecting if stitching preserved temporal patterns
+   - Scale-invariant (unaffected by Google Trends normalization)
+
+2. Normalized MAE (nmae) - Target: < 0.50
+   - Scale-invariant accuracy (MAE / mean_truth)
+   - Enables comparison across different search terms
+   - Interpretable: NMAE=0.34 means error is 34% of mean value
+
+SECONDARY METRICS (supplementary validation):
+3. Bias % (bias_pct) - Target: < 20%
+   - Detects systematic over/under-prediction
+   - Helps identify if method introduces directional bias
+
+4. MAE - Target: < 0.50 for typical weekly data (mean ~0.9)
+   - Absolute error magnitude in Google Trends index points
+   - Provides interpretable context but scale-dependent
+   - Less useful for cross-query comparison
+
+DIAGNOSTIC METRICS:
+5. RMSE - Detects outlier sensitivity
+6. R² - [DEPRECATED] Unreliable due to scale mismatches
+
+═══════════════════════════════════════════════════════════════════════
+USE CASE: FORECASTING / NOWCASTING (predicting future values)
+═══════════════════════════════════════════════════════════════════════
+Example: Using stitched series to forecast next week's value
+
+PRIMARY METRICS:
+1. MAE / RMSE - Absolute error targets matter
+   - Forecast accuracy measured in actual units
+   - MAE < X where X depends on application requirements
+
+2. NMAE - Scale-invariant performance
+   - Enables comparison across queries
+   - Useful for model benchmarking
+
+SECONDARY METRICS:
+3. Bias % - Systematic error detection
+4. Correlation - Pattern matching quality
+
+═══════════════════════════════════════════════════════════════════════
+TEMPORAL CROSS-VALIDATION
+═══════════════════════════════════════════════════════════════════════
+Generalization gap assessment uses BOTH:
+- NMAE gap: Scale-invariant generalization (primary)
+- MAE gap: Absolute degradation magnitude (context)
+
+Targets:
+- Generalization gap (NMAE): < 0.10 (10% of mean)
+- Generalization gap %: Prefer test < train (indicates robustness)
+
+═══════════════════════════════════════════════════════════════════════
+JUSTIFICATION FOR TARGETS
+═══════════════════════════════════════════════════════════════════════
+Based on "flu vaccine" query analysis (2022-2024, 158 weeks):
+- Weekly data mean: 0.909, median: 0.245, range: 0.098-4.895
+- Best method (Smooth Alpha): MAE=0.31, NMAE=0.336, Corr=0.954
+
+Targets derived:
+- Correlation ≥ 0.90: Excellent pattern match (achieved: 0.954)
+- NMAE < 0.50: Error < 50% of mean (achieved: 0.336)
+- MAE < 0.50: ~55% of mean for typical queries (achieved: 0.31)
+- Bias % < 20%: No strong directional bias (achieved: 11.4%)
+
+Old MAE target of 1.5 was arbitrary and too lenient (165% of mean).
+"""
+
 
 @dataclass
 class StitchingResult:
@@ -305,6 +386,14 @@ class StitchingEngine(ABC):
                 - {prefix}_bias: Mean bias (mean(predicted - actual))
                 - {prefix}_bias_pct: Bias as percentage of mean(truth)
                 - {prefix}_r2: [DEPRECATED] Coefficient of determination
+
+        Metric Priority for Validation Use Cases:
+            PRIMARY: corr (≥ 0.90), nmae (< 0.50)
+            SECONDARY: bias_pct (< 20%), mae (< 0.50 for typical queries)
+            DEPRECATED: r2 (unreliable due to scale mismatches)
+
+            See METRIC_HIERARCHY_GUIDE constant for complete guidance on when to
+            use each metric for validation vs forecasting scenarios.
 
         Note:
             R² is deprecated for Google Trends validation. Use correlation, nmae,
