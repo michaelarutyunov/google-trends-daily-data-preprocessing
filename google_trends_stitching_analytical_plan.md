@@ -137,7 +137,7 @@ KEY DECISION THRESHOLDS:
 
 - [ ] **API quota budget:** How many API calls available? (affects optimal overlap)
 - [ ] **Computational constraints:** Any time/memory limits? (affects method choice)
-- [ ] **Uncertainty quantification needed:** Do you need confidence intervals? (affects whether to use state-space)
+- [ ] **Uncertainty quantification needed:** Do you need confidence intervals?
 - [ ] **Publication target:** Academic journal vs internal analysis? (affects robustness requirements)
 
 ### 1.3 Key Challenges
@@ -248,26 +248,6 @@ daily_adjusted = daily_raw - dow_residuals
 **Additional Cost:** +50 lines preprocessing code, marginal compute time
 
 **Expected Benefit:** 0.5-2% MAE reduction if weekly seasonality present
-
----
-
-### 2.4 Theoretical Benchmark: State-Space Model (Rung 5)
-
-**Approach:**
-- Treat true daily search index as hidden state
-- Chunks as noisy observations with bias parameters
-- Estimate via Kalman filter (statsmodels.tsa.statespace)
-
-**Use Only If:**
-- Need probabilistic uncertainty bands for forecasting
-- Suspected regime shifts (e.g., vaccine policy changes)
-- Publishing in peer-reviewed journal
-
-**Why Not Primary Recommendation:**
-- Overkill for deterministic stitching
-- Requires careful specification (latent state design)
-- Harder to diagnose failures
-- ~10x implementation time
 
 ---
 
@@ -1174,10 +1154,10 @@ outlier_flag = monthly_residuals > 3 * monthly_residuals.std()
    - May not capture intra-chunk rebases by Google
    - Impact: Potential bias if rebase occurs mid-chunk (rare)
 
-2. **No uncertainty quantification:** 
+2. **No uncertainty quantification:**
    - Point estimates only (no confidence intervals)
    - Cannot propagate uncertainty to forecasting models
-   - Mitigation: Use bootstrap or state-space model if needed
+   - Mitigation: Use bootstrap if needed
 
 3. **Structural zero classification:** 
    - Summer months (Jun-Aug) excluded as structural zeros
@@ -1206,7 +1186,6 @@ outlier_flag = monthly_residuals > 3 * monthly_residuals.std()
 | Rung 1 (overlap only) | 4.2% | - | 60 | 1 hr | Continuity | Underconstrained |
 | **Rung 2 (recommended)** | **2.3%** | **4.1%** | 100 | 2 hrs | Robust, validated | No uncertainty |
 | Rung 3 (+ DOW) | 2.1% | 3.9% | 150 | 3 hrs | Marginally better | Extra complexity |
-| Rung 5 (state-space) | (not tested) | - | 300+ | 1 day | Uncertainty bands | Overkill for this task |
 
 **Conclusion:** "Rung 2 provides optimal balance of accuracy (58% improvement over baseline), robustness (stable across sensitivity tests), and implementation cost (2 hours). Rung 3 improvement marginal (0.2%) and not justified."
 
@@ -1438,7 +1417,6 @@ outlier_flag = monthly_residuals > 3 * monthly_residuals.std()
 1. **First:** Check data download integrity (re-download all sources)
 2. **Second:** Inspect chunks individually for outliers/censorship
 3. **Third:** Try monthly-only anchor (drop weekly layer entirely)
-4. **Last resort:** Use state-space model (Rung 5) for automatic outlier detection
 
 ---
 
@@ -1539,9 +1517,6 @@ import statsmodels.api as sm
 # Visualization
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-# Optional (for state-space if needed)
-from statsmodels.tsa.statespace import mlemodel
 ```
 
 **Recommended Versions:**
@@ -1797,7 +1772,7 @@ The following parameters have been optimized through extensive testing and shoul
 **When to Escalate:**
 - MAE > 5% after Stage 2 → Check data download
 - Robustness tests fail (CV > 20%) → Simplify model
-- Unresolvable edge cases → Use state-space (Rung 5)
+- Unresolvable edge cases → Manual investigation required
 
 ---
 

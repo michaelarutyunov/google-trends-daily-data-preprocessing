@@ -38,14 +38,6 @@ stitching:
     lambda_smoothness: 10  # Range: [0.1, 1000.0] - higher = smoother alpha path
     # Use when: Alpha CV > 20%, suspected Google rebasing events
 
-  # Rung 5: State-Space Stitcher parameters (EXPLORATORY - see nb/08)
-  state_space:
-    process_noise: 0.01  # State transition variance (Q matrix diagonal)
-    observation_noise: 0.05  # Measurement variance (R matrix diagonal)
-    confidence_level: 0.95  # For confidence band calculation
-    # Use when: Need uncertainty quantification for downstream forecasting
-    # NOTE: This is a heuristic implementation, not a true Kalman filter
-
 # SerpAPI configuration
 serpapi:
   timeout: 90  # Increased to 90s for daily data requests (can be slow)

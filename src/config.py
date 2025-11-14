@@ -72,28 +72,6 @@ class SmoothAlphaConfig:
 
 
 @dataclass
-class StateSpaceConfig:
-    """State-space stitcher configuration (Rung 5)."""
-
-    process_noise: float = 0.01
-    observation_noise: float = 0.05
-    confidence_level: float = 0.95
-
-    def __post_init__(self):
-        """Validate state-space parameters."""
-        if self.process_noise <= 0:
-            raise ValueError(f"process_noise must be positive, got {self.process_noise}")
-        if self.observation_noise <= 0:
-            raise ValueError(
-                f"observation_noise must be positive, got {self.observation_noise}"
-            )
-        if not 0 < self.confidence_level < 1:
-            raise ValueError(
-                f"confidence_level must be in (0, 1), got {self.confidence_level}"
-            )
-
-
-@dataclass
 class StitchingConfig:
     """Stitching method configuration."""
 
@@ -103,7 +81,6 @@ class StitchingConfig:
     max_iterations: int
     tolerance: float
     smooth_alpha: Optional[SmoothAlphaConfig] = None
-    state_space: Optional[StateSpaceConfig] = None
 
     def __post_init__(self):
         """Validate stitching parameters."""
@@ -267,16 +244,6 @@ class ConfigManager:
                 lambda_smoothness=smooth_alpha_raw.get("lambda_smoothness", 0.1)
             )
 
-        # Parse nested state_space config
-        state_space_raw = stitching_raw.get("state_space", {})
-        state_space_config = None
-        if state_space_raw:
-            state_space_config = StateSpaceConfig(
-                process_noise=state_space_raw.get("process_noise", 0.01),
-                observation_noise=state_space_raw.get("observation_noise", 0.05),
-                confidence_level=state_space_raw.get("confidence_level", 0.95),
-            )
-
         self.stitching = StitchingConfig(
             weights=stitching_raw.get("weights", {}),
             zero_threshold=stitching_raw.get("zero_threshold", 0.01),
@@ -284,7 +251,6 @@ class ConfigManager:
             max_iterations=stitching_raw.get("max_iterations", 1000),
             tolerance=stitching_raw.get("tolerance", 1.0e-8),
             smooth_alpha=smooth_alpha_config,
-            state_space=state_space_config,
         )
 
         # SerpAPI config

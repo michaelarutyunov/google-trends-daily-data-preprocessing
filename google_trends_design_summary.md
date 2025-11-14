@@ -387,28 +387,6 @@ class SmoothAlphaStitcher(StitchingEngine):
 
 ---
 
-### Rung 5: State-Space Stitcher (Phase 5)
-**Component:** `src/stitching/state_space.py` (not implemented)
-
-**Method:** Kalman filter with latent state x_t = [log S_t, β_DOW_t]
-
-**Dependency:** `statsmodels` (already available)
-
-**Interface:**
-```python
-class StateSpaceStitcher(StitchingEngine):
-    def stitch(self, ...):
-        raise NotImplementedError("Phase 5")
-    def name(self):
-        return "State-Space Model (Kalman Filter)"
-```
-
-**Additional Output:** `confidence_bands: pd.DataFrame [date, lower, upper]`
-
-**When to implement:** Need uncertainty bands for forecasting or publishing results
-
----
-
 ## Performance Targets
 
 | Task | Target | Hardware |

@@ -42,7 +42,6 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 | **Hierarchical** | **0.36** | ✅ Working | nb/03 | Strong alternative |
 | Hierarchical+DOW | 0.38 | ✅ Working | nb/05 | Day-of-week patterns |
 | Baseline | 0.70 | ✅ Working | nb/02 | Reference only |
-| State-Space | 0.75 | ⚠️ Heuristic | nb/08 | Exploratory reference |
 
 ## Key Features
 
@@ -69,15 +68,13 @@ jupyter notebook nb/04_smooth_alpha_stitching.ipynb
 │   ├── 02_baseline_stitching.ipynb
 │   ├── 03_hierarchical_stitching.ipynb
 │   ├── 04_smooth_alpha_stitching.ipynb      ⭐ Recommended
-│   ├── 05_hierarchical_dow_stitching.ipynb
-│   └── 08_state_space_stitching.ipynb       (heuristic reference)
+│   └── 05_hierarchical_dow_stitching.ipynb
 ├── src/
 │   ├── stitching/              # Stitching methods
 │   │   ├── smooth_alpha.py     # ⭐ Production method
 │   │   ├── hierarchical.py
 │   │   ├── baseline.py
-│   │   ├── hierarchical_dow.py
-│   │   └── state_space.py
+│   │   └── hierarchical_dow.py
 │   ├── config.py               # ConfigManager
 │   ├── api.py                  # SerpAPI wrapper
 │   ├── validation.py           # Validation metrics
