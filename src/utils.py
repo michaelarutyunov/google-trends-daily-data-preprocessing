@@ -211,8 +211,20 @@ def calculate_chunk_parameters(
     start = 0
     for i in range(num_chunks):
         end = min(start + max_chunk_size, total_days)
+        chunk_size = end - start
+
+        # Don't create chunk if it's redundant (size <= overlap)
+        # These days are already covered by the previous chunk's overlap
+        if chunk_size <= overlap_days:
+            logger.info(
+                f"Skipping redundant chunk {i} (size={chunk_size} <= overlap={overlap_days})"
+            )
+            break
+
         chunks.append((start, end))
         start += effective_chunk_size
+
+    num_chunks = len(chunks)  # Update to actual count
 
     logger.info(
         f"Calculated {num_chunks} chunks for {total_days} days "

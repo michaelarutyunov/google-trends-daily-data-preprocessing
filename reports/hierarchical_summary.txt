@@ -3,40 +3,40 @@ HIERARCHICAL STITCHING SUMMARY
 ==============================
 
 Search Term: flu vaccine
-Date Range: 2022-01-01 to 2024-12-31
-Overlap: 60 days
+Date Range: 2022-05-15 to 2025-08-07
+Overlap: 83 days
 
 DATA:
   Monthly observations: 263
-  Weekly observations: 158
+  Weekly observations: 169
   Daily chunks: 6
-  Stitched daily points: 1096
+  Stitched daily points: 1181
 
 VALIDATION METRICS:
 
   ✅ MONTHLY (SOFT CONSTRAINTS - MEANINGFUL):
-      MAE: 2.92 (Target: < 3.0)
-      RMSE: 3.58
-      Correlation: 0.935
-      NMAE: 0.419
-      Bias: -40.7%
+      MAE: 2.65 (Target: < 3.0)
+      RMSE: 3.16
+      Correlation: 0.955
+      NMAE: 0.388
+      Bias: -37.2%
 
       These metrics are meaningful because hierarchical uses soft
       constraints (weighted, not forced).
 
   ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
-      MAE: 0.36 ⭐ (Target: < 1.5)
-      RMSE: 0.62
-      Correlation: 0.902 (pattern similarity)
-      NMAE: 0.391 (scale-invariant)
-      Bias: 3.6% (systematic deviation)
+      MAE: 0.31 ⭐ (Target: < 1.5)
+      RMSE: 0.55
+      Correlation: 0.954 (pattern similarity)
+      NMAE: 0.337 (scale-invariant)
+      Bias: 11.4% (systematic deviation)
 
 ALPHA STATISTICS (Chunk-level):
-  Mean: 0.167
-  Std: 0.136
-  Min: 0.009
-  Max: 0.387
-  CV: 0.810
+  Mean: 0.160
+  Std: 0.119
+  Min: 0.047
+  Max: 0.369
+  CV: 0.740
 
 OPTIMIZATION:
   Converged: True

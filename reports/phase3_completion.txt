@@ -9,11 +9,11 @@ PHASE 3 COMPLETION SUMMARY
 
 ✓ Temporal Cross-Validation:
   - Configuration: 24 months train, 3 months gap, 6 months test
-  - Methods tested: 5
+  - Methods tested: 4
   - Results: See reports/temporal_cv_comparison.png
 
 ✓ Final Method Comparison:
-  - Methods compared: 5 (baseline, hierarchical, hierarchical_dow, smooth_alpha, state_space)
+  - Methods compared: 4 (baseline, hierarchical, hierarchical_dow, smooth_alpha)
   - Primary metric: Weekly MAE (independent validation)
   - Recommended method: SMOOTH_ALPHA
 
@@ -25,8 +25,8 @@ PHASE 3 COMPLETION SUMMARY
 PHASE 3 CRITERIA:
 -----------------
   Weekly MAE < 1.5: ✓ PASS
-  Monthly MAE < 3.0: ✗ FAIL
-  Temporal CV < 2% gap: ✓ PASS
+  Monthly MAE < 3.0: ✓ PASS
+  Temporal CV < 2% gap: ✗ FAIL
   Method exported: ✓ PASS
 
 METHOD SUMMARY:
@@ -35,7 +35,6 @@ METHOD SUMMARY:
   Hierarchical: Best overall performance ⭐
   Hierarchical+DOW: Degraded by renormalization
   Smooth Alpha: Similar to hierarchical, smoother alphas (requires cvxpy)
-  State-Space: Adds uncertainty quantification (requires statsmodels)
 
 NEXT STEPS:
 -----------
@@ -43,6 +42,5 @@ NEXT STEPS:
 2. Use exported series from results/smooth_alpha_final.parquet for forecasting
 3. To analyze different search term: Edit config.yaml and rerun all notebooks
 4. Consider smooth_alpha if you need alpha stability > accuracy
-5. Consider state_space if you need confidence intervals for forecasting
 
 ✓ PHASE 3 COMPLETE!

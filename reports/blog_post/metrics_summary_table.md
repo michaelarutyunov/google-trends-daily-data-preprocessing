@@ -1,10 +1,10 @@
 # Method Comparison: Metrics Summary
 
-| Method               |   Weekly MAE |   Pearson Corr |   NMAE | Bias %   |   Alpha CV |
-|:---------------------|-------------:|---------------:|-------:|:---------|-----------:|
-| Baseline             |         0.7  |          0.936 |  0.765 | 74.4%    |       0.72 |
-| Hierarchical         |         0.36 |          0.902 |  0.391 | 3.6%     |       0.81 |
-| Smooth Alpha (λ=499) |         0.26 |          0.937 |  0.279 | -0.4%    |       0.54 |
-| Hierarchical+DOW     |         0.38 |          0.9   |  0.412 | 9.2%     |       0.81 |
+| Method              |   Weekly MAE |   Pearson Corr |   NMAE | Bias %   |   Alpha CV |
+|:--------------------|-------------:|---------------:|-------:|:---------|-----------:|
+| Baseline            |         0.73 |          0.906 |  0.803 | 75.0%    |       1.13 |
+| Hierarchical        |         0.31 |          0.954 |  0.337 | 11.4%    |       0.74 |
+| Smooth Alpha (λ=10) |         0.31 |          0.954 |  0.336 | 11.4%    |       0.74 |
+| Hierarchical+DOW    |         0.33 |          0.953 |  0.362 | 17.8%    |       0.74 |
 
 **Note**: Weekly MAE < 1.5 is the target. Smooth Alpha achieves 0.32, exceeding the target by 78%.

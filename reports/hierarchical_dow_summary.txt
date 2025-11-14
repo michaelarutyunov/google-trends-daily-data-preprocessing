@@ -3,53 +3,53 @@ HIERARCHICAL+DOW STITCHING SUMMARY
 ===================================
 
 Search Term: flu vaccine
-Date Range: 2022-01-01 to 2024-12-31
-Overlap: 60 days
+Date Range: 2022-05-15 to 2025-08-07
+Overlap: 83 days
 
 DATA:
   Monthly observations: 263
-  Weekly observations: 158
+  Weekly observations: 169
   Daily chunks: 6
-  Stitched daily points: 1096
+  Stitched daily points: 1181
 
 DAY-OF-WEEK PATTERN:
-  Monday: 1.163 (+16.3%)
-  Tuesday: 1.194 (+19.4%)
-  Wednesday: 1.286 (+28.6%)
-  Thursday: 1.197 (+19.7%)
-  Friday: 1.031 (+3.1%)
-  Saturday: 0.672 (-32.8%)
-  Sunday: 0.457 (-54.3%)
+  Monday: 1.134 (+13.4%)
+  Tuesday: 1.202 (+20.2%)
+  Wednesday: 1.291 (+29.1%)
+  Thursday: 1.228 (+22.8%)
+  Friday: 1.056 (+5.6%)
+  Saturday: 0.583 (-41.7%)
+  Sunday: 0.506 (-49.4%)
 
   Mean: 1.000
-  Std: 0.290
-  Range: 0.829
+  Std: 0.297
+  Range: 0.786
 
 VALIDATION METRICS:
 
   ✅ MONTHLY (DOW-CORRECTED, SOFT CONSTRAINTS - MEANINGFUL):
-      MAE: 2.75 (Target: < 3.0)
-      RMSE: 3.39
-      Correlation: 0.937
-      NMAE: 0.395
-      Bias: -37.4%
+      MAE: 2.56 (Target: < 3.0)
+      RMSE: 3.04
+      Correlation: 0.954
+      NMAE: 0.376
+      Bias: -33.6%
 
       These metrics are meaningful because the method uses DOW correction
       with soft constraints (not forced renormalization).
 
-  Base Monthly MAE (before DOW): 2.92
-  Improvement: 5.8%
+  Base Monthly MAE (before DOW): 2.65
+  Improvement: 3.2%
 
   ✅ WEEKLY (INDEPENDENT VALIDATION - MEANINGFUL):
-      MAE: 0.38 ⭐ (Target: < 1.5)
-      RMSE: 0.67
-      Correlation: 0.900 (pattern similarity)
-      NMAE: 0.412 (scale-invariant)
-      Bias: 9.2% (systematic deviation)
+      MAE: 0.33 ⭐ (Target: < 1.5)
+      RMSE: 0.62
+      Correlation: 0.953 (pattern similarity)
+      NMAE: 0.362 (scale-invariant)
+      Bias: 17.8% (systematic deviation)
 
 ALPHA STATISTICS (Chunk-level):
-  Mean: 0.167
-  Std: 0.136
-  Min: 0.009
-  Max: 0.387
-  CV: 0.810
+  Mean: 0.160
+  Std: 0.119
+  Min: 0.047
+  Max: 0.369
+  CV: 0.740

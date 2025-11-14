@@ -5,8 +5,8 @@ Configuration Summary
 =====================
 Search Term: flu vaccine
 Geographic Location: GB
-Date Range: 2022-01-01 to 2024-12-31 (1096 days)
-Overlap: 60 days
+Date Range: 2022-05-15 to 2025-08-07 (1181 days)
+Overlap: 83 days
 Random Seed: 42
 
 Stitching Weights:
@@ -29,9 +29,9 @@ SerpAPI:
 
 Data Collection Summary:
   Historical Monthly: 263 points (2004-present)
-  Weekly: 158 points (2022-01-01 to 2024-12-31)
+  Weekly: 169 points (2022-05-15 to 2025-08-07)
   Daily Chunks: 6 chunks
-  Total Daily Points: 1396
+  Total Daily Points: 1596
 
 
 
@@ -43,15 +43,15 @@ STATISTICS:
   monthly_zero_percentage: 0.0%
   monthly_structural_zeros: 0
   monthly_sampling_zeros: 0
-  chunk_0_1_overlap_days: 60
-  chunk_1_2_overlap_days: 60
-  chunk_2_3_overlap_days: 60
-  chunk_3_4_overlap_days: 60
-  chunk_4_5_overlap_days: 60
-  monthly_count: 158
-  monthly_mean: 19.65
-  monthly_std: 25.36
+  chunk_0_1_overlap_days: 83
+  chunk_1_2_overlap_days: 83
+  chunk_2_3_overlap_days: 83
+  chunk_3_4_overlap_days: 83
+  chunk_4_5_overlap_days: 83
+  monthly_count: 169
+  monthly_mean: 18.57
+  monthly_std: 24.77
   monthly_min: 2
   monthly_max: 100
   num_daily_chunks: 6
-  total_daily_points: 1396
+  total_daily_points: 1596
